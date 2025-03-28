@@ -63,7 +63,7 @@ export default async function (eleventyConfig) {
 		htmlOptions: {
 			imgAttributes: {
 				loading: "lazy",
-				decosing: "async"
+				decoding: "async"
 			}
 		}
 	})
@@ -106,27 +106,31 @@ export default async function (eleventyConfig) {
 		return (new Date()).toISOString();
 	});
 
-	eleventyConfig.addShortcode("join", path.join);
-
-	eleventyConfig.addPairedShortcode("gallery", function (content, caption = "") {
-		var figure_classes = "kg-card kg-gallery-card kg-width-wide";
-		var figcaption = "";
-		if (caption != "") {
-			figure_classes += " kg-card-hascaption";
-			figcaption = `<figcaption><p><span style="white-space: pre-wrap;">${caption}</span></p></figcaption>`
-		}
-		return `<figure class="${figure_classes}">
-		<div class="kg-gallery-container">
-		${content}
-		${figcaption}
-		</div>
-		</figure>`
-	});
-
 	eleventyConfig.addPairedShortcode("galleryRow", function (content) {
 		return `<div class="kg-gallery-row">
 		${content}
 		</div>`;
+	});
+
+	eleventyConfig.addShortcode("caption", (caption) => {
+		return `<figcaption><span style="white-space: pre-wrap;">${caption}</span></figcaption>`;
+	})
+
+	eleventyConfig.addPairedShortcode("figure", (content) => {
+		const $ = cheerio.load(content, null, false);
+		var classes = ["kg-card"]
+		content = `
+		${content}
+		`
+		if($("div.kg-gallery-row").length != 0) {
+			classes.push("kg-gallery-card");
+			classes.push("kg-width-wide");
+			content = `<div clas="kg-gallery-container">${content}</div>`;
+		}
+		if($("figcaption").length != 0) {
+			classes.push("kg-card-hascaption");
+		}
+		return `<figure class="${classes.join(" ")}">${content}</figure>`;
 	});
 
 	eleventyConfig.addShortcode("relativePath", function (filePath, page=undefined) {
@@ -169,12 +173,16 @@ export default async function (eleventyConfig) {
 			});
 	});
 
-	eleventyConfig.addTransform("image-gallery", function (content) {
+	eleventyConfig.addTransform("card-processing", function (content) {
 		if (this.page.outputFileExtension != "html") {
 			return content;
 		}
 		const $ = cheerio.load(content, {}, true);
-		$("div.kg-gallery-row").each((index, div) => {
+		$("picture:not(div > picture, figure picture)").each((_, picture) => {
+			$(picture).wrap(`<figure class="kg-card kg-image-card"></figure>`);
+		})
+
+		$("div.kg-gallery-row").each((_, div) => {
 			let pictures = [];
 			let totalAspect = 0;
 			$(div).find('picture').each((index, picture) => {
@@ -208,12 +216,17 @@ export default async function (eleventyConfig) {
 		$("div.kg-gallery-container").each((index, element) => {
 			$(element).children().remove('p');
 		});
+		$("figure.kg-card:not(figure.kg-gallery-card):not(figure.kg-image-card)").each((_, figure) => {
+			if($(figure).find("picture").length > 0) {
+				$(figure).addClass("kg-image-card");
+			}
+		});
 		return $.html();
 	});
 
 
 	eleventyConfig.addPlugin(tinyHTML);
-	eleventyConfig.addPlugin(EleventyVitePlugin);
+	// eleventyConfig.addPlugin(EleventyVitePlugin);
 
 	eleventyConfig.addTransform("critical-css", async function (content) {
 		process.setMaxListeners(20);

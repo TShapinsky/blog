@@ -18,13 +18,14 @@ Since I left undergrad and started working a 9-5 job I have had fewer of those w
 
 ## Past Work
 
-{% gallery "Some of my work from my undergrad (Left to Right: IR Ivy, SEM Bee, UVIVF Kiwi)" %}
+{% figure %}
 {% galleryRow %}
 !["Ivy growing on a brick wall, shot in infrared"](old_work_gallery/ivy.jpg)
 ![bee](old_work_gallery/bee.jpg)
 ![kiwi](old_work_gallery/kiwi.jpg)
 {% endgalleryRow %}
-{% endgallery %}
+{% caption "Some of my work from my undergrad (Left to Right: IR Ivy, SEM Bee, UVIVF Kiwi)"%}
+{% endfigure %}
 
 Reflecting on my catalog of work, I realized that a lot of the things I was most proud of involved unconventional imaging methods. In school I did a series of portraits of Honey Bees using a scanning electron microscope. I also experimented with Ultraviolet Induced Visible Fluorescence (UVIVF) where you shine a very pure ultraviolet light source at a subject in near pitch darkness resulting in otherworldly colors. In addition to this, after watching a Ted Forbes video, I became transfixed by infrared, convincing my photography professor to let me disassemble one of her Canon 60Ds to convert it for infrared. 
 
@@ -44,12 +45,13 @@ Color essentially colored pieces of glass you place in front of your lens to man
 
 For more information about how filters work you can checkout this [article from The Darkroom](https://thedarkroom.com/color-filters-with-bw-film/).
 
-{% gallery "Black and White Image taken without red filter (left) and with red filter (right)" %}
+{% figure %}
 {% galleryRow %}
 ![Image shot with no red filter](no_red_filter.jpg)
 ![image shot with a red filter](red_filter.jpg)
 {% endgalleryRow %}
-{% endgallery %}
+{% caption "Black and White Image taken without red filter (left) and with red filter (right)" %}
+{% endfigure %}
 
 What really stood out to me when I was learning about filters was the effect that a yellow or red filter had on the darkness of the sky in a photo. As you can see in the above photo (left), usually, in a black and white photo the sky has a similar value to the foreground so the clouds have a tendency to blend into the sky. However, when you stick a yellow filter or a more extreme red filter it start to really bring down the sky value while still maintaining bright white clouds (right).
 
